@@ -11,7 +11,7 @@ class Win(QMainWindow):
         self.image_beyaz_piyon = QPixmap('./beyaz_piyon.png')
         self.image_secili_bolge = QPixmap('./secili_bolge.png')
         self.image_beyaz_at = QPixmap('./beyaz_at.png')
-        self.geldigi_yer = QPixmap('./geldigi_yer.png')
+        self.image_geldigi_yer = QPixmap('./geldigi_yer.png')
         self.izin = 'yok'
         self.a=1
 
@@ -62,11 +62,12 @@ class Win(QMainWindow):
             self.sayac += 1
 
 
+        
         qp.begin(self)
         qp.drawPixmap(self.rect(),self.image)
 
         if self.ilk_dokunus == 'gitme':
-            qp.drawPixmap(self.etkin_konum[0],self.etkin_konum[1],100,100,self.geldigi_yer)
+            qp.drawPixmap(self.etkin_konum[0],self.etkin_konum[1],100,100,self.image_secili_bolge)
             self.a = 2
 
 
@@ -83,9 +84,11 @@ class Win(QMainWindow):
                 if self.taslarin_konumlari_beyaz[i][0] == self.etkin_tas:
                     self.taslarin_konumlari_beyaz[i][1]= self.mouse_x_yuvarlanmis
                     self.taslarin_konumlari_beyaz[i][2] = self.mouse_y_yuvarlanmis
-        
+            if self.ilk_dokunus == 'tiklama':
+                qp.drawPixmap(self.etkin_konum[0],self.etkin_konum[1],100,100,self.image_geldigi_yer)
             self.ilk_dokunus = 'tiklama'
             self.a=1
+            
         qp.drawPixmap(self.taslarin_konumlari_beyaz[0][1],self.taslarin_konumlari_beyaz[0][2],100,100,self.image_beyaz_at)
         qp.drawPixmap(self.taslarin_konumlari_beyaz[1][1],self.taslarin_konumlari_beyaz[1][2],100,100,self.image_beyaz_piyon)
 
