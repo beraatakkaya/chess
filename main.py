@@ -12,6 +12,7 @@ class Win(QMainWindow):
         self.image_secili_bolge = QPixmap('./secili_bolge.png')
         self.image_beyaz_at = QPixmap('./beyaz_at.png')
         self.image_geldigi_yer = QPixmap('./geldigi_yer.png')
+        self.image_gittigi_yer = QPixmap('./gittigi_yer.png')
         self.izin = 'yok'
         self.a=1
 
@@ -48,6 +49,7 @@ class Win(QMainWindow):
                                 self.ilk_dokunus = 'gitme'
                             self.repaint()
         else:
+            self.gidecegi_yer = [self.mouse_x_yuvarlanmis,self.mouse_y_yuvarlanmis]
             self.a = 3
             self.ilk_dokunus = 'tiklama'
             self.repaint()
@@ -76,7 +78,7 @@ class Win(QMainWindow):
 
         if  self.a == 3:
             qp.drawPixmap(self.mouse_x_yuvarlanmis,self.mouse_y_yuvarlanmis,100,100,self.etkin_tas)
-            print(self.mouse_x_yuvarlanmis)
+            qp.drawPixmap(self.gidecegi_yer[0],self.gidecegi_yer[1],100,100,self.image_gittigi_yer)
             
 
 
