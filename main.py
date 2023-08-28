@@ -89,10 +89,15 @@ class Win(QMainWindow):
     def piyon_hareketi(self):
         if self.sira == 'siyah':
             for i in range(len(self.taslarin_konumlari_beyaz)):
-                if (self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-100) or (self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-100):
+                if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-100:
                     self.izint = 'yok'
             
-                if (self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-200) or (self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-200):
+                if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-200:
+                    self.izini = 'yok'
+            for j in range(len(self.taslarin_konumlari_siyah)):
+                if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-100:
+                    self.izint = 'yok'
+                if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-200:
                     self.izini = 'yok'
             if self.izint != 'yok':
                 self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]-100])
@@ -190,6 +195,10 @@ class Win(QMainWindow):
                 if self.etkin_tas == self.piyon[i]:
                     self.gidilebilir_yerler = self.piyon_hareketi()
                     print(self.gidilebilir_yerler)
+            for i in range(4):
+                if self.etkin_tas == self.fil[i]:
+                    self.gidilebilir_yerler = self.piyon_hareketi()
+                    print(self.gidilebilir_yerler)
             for gidilebilir_yer in self.gidilebilir_yerler:
                 qp.drawPixmap(gidilebilir_yer[0],gidilebilir_yer[1],100,100,self.image_gidilebilir_yerler)
             self.a = 2
@@ -217,8 +226,6 @@ class Win(QMainWindow):
       
         qp.end()
 
-
-        
 app =QApplication(sys.argv)
 win = Win()
 win.show()
