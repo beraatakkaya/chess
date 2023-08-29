@@ -65,7 +65,7 @@ class Win(QMainWindow):
         self.at = [self.image_beyaz_at1,self.image_beyaz_at2,self.image_siyah_at1,self.image_siyah_at2]
         self.fil = [self.image_beyaz_fil1,self.image_beyaz_fil2,self.image_siyah_fil1,self.image_siyah_fil2]
         self.vezir = [self.image_beyaz_vezir,self.image_siyah_vezir]
-        self.sah = [self.image_beyaz_vezir,self.image_siyah_vezir]
+        self.sah = [self.image_beyaz_sah,self.image_siyah_sah]
         self.tas_adlari = [self.piyon,self.kale,self.at,self.fil,self.vezir,self.sah]
         self.a=1
         self.gidilebilir_yerler = []
@@ -284,6 +284,37 @@ class Win(QMainWindow):
                     self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]-j])
                     self.izin4[1] = '0'
         return self.gidilebilir_yerler
+    def sah_hareketi(self):
+        print('girdi')
+        self.sah_ihtimalleri = [
+            [self.etkin_konum[0]+100,self.etkin_konum[1]],
+            [self.etkin_konum[0],self.etkin_konum[1]+100],
+            [self.etkin_konum[0]-100,self.etkin_konum[1]],
+            [self.etkin_konum[0],self.etkin_konum[1]-100],
+            [self.etkin_konum[0]+100,self.etkin_konum[1]+100],
+            [self.etkin_konum[0]+100,self.etkin_konum[1]-100],
+            [self.etkin_konum[0]-100,self.etkin_konum[1]+100],
+            [self.etkin_konum[0]-100,self.etkin_konum[1]-100]]
+        if self.sira == 'beyaz':
+            self.izint[0] = 'var'
+            for i in range(len(self.sah_ihtimalleri)):
+                for j in range(len(self.taslarin_konumlari_siyah)):
+                    if self.sah_ihtimalleri[i][0] == self.taslarin_konumlari_siyah[j][1] and\
+                         self.taslarin_konumlari_siyah[j][2] == self.sah_ihtimalleri[i][1]:
+                         break
+                else:
+                    self.gidilebilir_yerler.append([self.sah_ihtimalleri[i][0],self.sah_ihtimalleri[i][1]])
+        elif self.sira == 'siyah':
+            self.izint[0] = 'var'
+            for i in range(len(self.sah_ihtimalleri)):
+                for j in range(len(self.taslarin_konumlari_beyaz)):
+                    if self.sah_ihtimalleri[i][0] == self.taslarin_konumlari_beyaz[j][1] and\
+                        self.taslarin_konumlari_beyaz[j][2] == self.sah_ihtimalleri[i][1]:
+                        break
+                else:
+                    self.gidilebilir_yerler.append([self.sah_ihtimalleri[i][0],self.sah_ihtimalleri[i][1]])
+        self.sah_ihtimalleri = []
+        return self.gidilebilir_yerler
     def mousePressEvent(self, event):
         
         self.mouse_click_x =[event.x()]
@@ -359,27 +390,26 @@ class Win(QMainWindow):
             for i in range(16):
                 if self.etkin_tas == self.piyon[i]:
                     self.gidilebilir_yerler = self.piyon_hareketi()
-                    print(self.gidilebilir_yerler)
                     break
             for i in range(4):
                 if self.etkin_tas == self.fil[i]:
                     self.gidilebilir_yerler = self.fil_hareketi()
-                    print(self.gidilebilir_yerler)
                     break
-                if self.etkin_tas == self.kale[i]:
+                elif self.etkin_tas == self.kale[i]:
                     self.gidilebilir_yerler = self.kale_hareketi()
-                    print(self.gidilebilir_yerler)
                     break
             for i in range(2):
                 if self.etkin_tas == self.vezir[i]:
                     self.gidilebilir_yerler = self.fil_hareketi()
                     self.gidilebilir_yerler.extend(self.kale_hareketi())
-                    
+                if self.etkin_tas == self.sah[i]:
+                    self.gidilebilir_yerler = self.sah_hareketi()
             for gidilebilir_yer in self.gidilebilir_yerler:
                 qp.drawPixmap(gidilebilir_yer[0],gidilebilir_yer[1],100,100,self.image_gidilebilir_yerler)
-
             self.a = 2
-
+            print(self.gidilebilir_yerler)
+        
+        
         if  self.a == 3:
             qp.drawPixmap(self.mouse_x_yuvarlanmis,self.mouse_y_yuvarlanmis,100,100,self.etkin_tas)
             qp.drawPixmap(self.gidecegi_yer[0],self.gidecegi_yer[1],100,100,self.image_gittigi_yer)
