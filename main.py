@@ -97,7 +97,7 @@ class Win(QMainWindow):
                     self.izint[0] = 'yok'
                 if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-200:
                     self.izini[0] = 'yok'
-            for j in range(len(self.taslarin_konumlari_siyah)):
+            for i in range(len(self.taslarin_konumlari_siyah)):
                 if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-100:
                     self.izint[0] = 'yok'
                 if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-200:
@@ -115,7 +115,7 @@ class Win(QMainWindow):
                     self.izint[0] = 'yok'
                 if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+200:
                     self.izini[0] = 'yok'
-            for j in range(len(self.taslarin_konumlari_siyah)):
+            for i in range(len(self.taslarin_konumlari_siyah)):
                 if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+100:
                     self.izint[0] = 'yok'
                 if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+200:
