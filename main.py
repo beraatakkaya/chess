@@ -69,8 +69,10 @@ class Win(QMainWindow):
         self.tas_adlari = [self.piyon,self.kale,self.at,self.fil,self.vezir,self.sah]
         self.a=1
         self.gidilebilir_yerler = []
-        self.izint = 'var'
-        self.izini = 'var'
+        self.izint = ['var','0']
+        self.izini = ['var','0']
+        self.izin3 = ['var','0']
+        self.izin4 = ['var','0']
 
         self.initUI()
     def yuvarlama(self,sayi):
@@ -87,37 +89,200 @@ class Win(QMainWindow):
         self.mouse_x_yuvarlanmis = 0
         self.mouse_y_yuvarlanmis = 0
     def piyon_hareketi(self):
+        self.izint[0] = 'var'
+        self.izini[0] = 'var'
         if self.sira == 'siyah':
             for i in range(len(self.taslarin_konumlari_beyaz)):
                 if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-100:
-                    self.izint = 'yok'
-            
+                    self.izint[0] = 'yok'
                 if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-200:
-                    self.izini = 'yok'
+                    self.izini[0] = 'yok'
             for j in range(len(self.taslarin_konumlari_siyah)):
                 if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-100:
-                    self.izint = 'yok'
+                    self.izint[0] = 'yok'
                 if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-200:
-                    self.izini = 'yok'
-            if self.izint != 'yok':
+                    self.izini[0] = 'yok'
+            if self.izint[0] != 'yok':
                 self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]-100])
-                self.izint = 'var'
-            if self.izini != 'yok':
+                self.izint[0] = 'var'
+            if self.izini[0] != 'yok':
                 if self.etkin_konum[1] == 600:
                         self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]-200])
-                        self.izini = 'var'
+                        self.izini[0] = 'var'
         elif self.sira == 'beyaz':
             for i in range(len(self.taslarin_konumlari_beyaz)):
-                if (self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+100) or (self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+100):
-                    self.izint = 'yok'
-            
-                if (self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+200) or (self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+200):
-                    self.izini = 'yok'
-            if self.izint != 'yok':
+                if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+100:
+                    self.izint[0] = 'yok'
+                if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+200:
+                    self.izini[0] = 'yok'
+            for j in range(len(self.taslarin_konumlari_siyah)):
+                if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+100:
+                    self.izint[0] = 'yok'
+                if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+200:
+                    self.izini[0] = 'yok'
+            if self.izint[0] != 'yok':
                 self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]+100])
-            if self.izini != 'yok':
+                self.izint[0] = 'var'
+            if self.izini[0] != 'yok':
                 if self.etkin_konum[1] == 100:
                         self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]+200])
+                        self.izini[0] = 'var'
+        return self.gidilebilir_yerler
+    def fil_hareketi(self):
+        self.izint[0] = 'var'
+        self.izini[0] = 'var'
+        self.izin3[0] = 'var'
+        self.izin4[0] = 'var'
+        if self.sira == 'beyaz':                          
+            for j in range(100,800,100):
+                for i in range(len(self.taslarin_konumlari_beyaz)):
+                        if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+j and self.izint[0] == 'var':
+                            self.izint[0]='yok'
+                            self.izint[1] = '1'
+                        if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+j and self.izini[0] == 'var':
+                            self.izini[0]='yok'
+                            self.izini[1] = '1'
+                        if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-j and self.izin3[0] == 'var':
+                            self.izin3[0]='yok'
+                            self.izin3[1] = '1'
+                        if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-j and self.izin4[0] == 'var':
+                            self.izin4[1] = '1'
+                            self.izin4[0] = 'yok'
+                for i in range(len(self.taslarin_konumlari_siyah)):
+                    if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+j and self.izint[0] == 'var':
+                        self.izint[0]='yok'
+                    if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+j and self.izini[0] == 'var':
+                        self.izini[0]='yok'
+                    if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-j and self.izin3[0] == 'var':
+                        self.izin3[0]='yok'
+                    if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-j and self.izin4[0] == 'var':
+                        self.izin4[0]='yok'
+                if self.izint[0] != 'yok' or self.izint[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]+j,self.etkin_konum[1]+j])
+                    self.izint[1] = '0'
+                if self.izini[0] != 'yok' or self.izini[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]-j,self.etkin_konum[1]+j])
+                    self.izini[1] = '0'
+                if self.izin3[0] != 'yok' or self.izin3[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]+j,self.etkin_konum[1]-j])
+                    self.izin3[1] = '0'
+                if self.izin4[0] != 'yok' or self.izin4[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]-j,self.etkin_konum[1]-j])
+                    self.izin4[1] = '0'
+        elif self.sira == 'siyah':                          
+            for j in range(100,800,100):
+                for i in range(len(self.taslarin_konumlari_siyah)):
+                        if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+j and self.izint[0] == 'var':
+                            self.izint[0]='yok'
+                            self.izint[1] = '1'
+                        if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+j and self.izini[0] == 'var':
+                            self.izini[0]='yok'
+                            self.izini[1] = '1'
+                        if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-j and self.izin3[0] == 'var':
+                            self.izin3[0]='yok'
+                            self.izin3[1] = '1'
+                        if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-j and self.izin4[0] == 'var':
+                            self.izin4[1] = '1'
+                            self.izin4[0] = 'yok'
+                for i in range(len(self.taslarin_konumlari_beyaz)):
+                    if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+j and self.izint[0] == 'var':
+                        self.izint[0]='yok'
+                    if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+j and self.izini[0] == 'var':
+                        self.izini[0]='yok'
+                    if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-j and self.izin3[0] == 'var':
+                        self.izin3[0]='yok'
+                    if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-j and self.izin4[0] == 'var':
+                        self.izin4[0]='yok'
+                if self.izint[0] != 'yok' or self.izint[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]+j,self.etkin_konum[1]+j])
+                    self.izint[1] = '0'
+                if self.izini[0] != 'yok' or self.izini[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]-j,self.etkin_konum[1]+j])
+                    self.izini[1] = '0'
+                if self.izin3[0] != 'yok' or self.izin3[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]+j,self.etkin_konum[1]-j])
+                    self.izin3[1] = '0'
+                if self.izin4[0] != 'yok' or self.izin4[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]-j,self.etkin_konum[1]-j])
+                    self.izin4[1] = '0'
+        return self.gidilebilir_yerler
+    def kale_hareketi(self):
+        self.izint[0] = 'var'
+        self.izini[0] = 'var'
+        self.izin3[0] = 'var'
+        self.izin4[0] = 'var' 
+        if self.sira == 'beyaz':                         
+            for j in range(100,800,100):
+                for i in range(len(self.taslarin_konumlari_beyaz)):
+                        if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1] and self.izint[0] == 'var':
+                            self.izint[0]='yok'
+                            self.izint[1] = '1'
+                        if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+j and self.izini[0] == 'var':
+                            self.izini[0]='yok'
+                            self.izini[1] = '1'
+                        if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1] and self.izin3[0] == 'var':
+                            self.izin3[0]='yok'
+                            self.izin3[1] = '1'
+                        if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-j and self.izin4[0] == 'var':
+                            self.izin4[1] = '1'
+                            self.izin4[0] = 'yok'
+                for i in range(len(self.taslarin_konumlari_siyah)):
+                    if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1] and self.izint[0] == 'var':
+                        self.izint[0]='yok'
+                    if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+j and self.izini[0] == 'var':
+                        self.izini[0]='yok'
+                    if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1] and self.izin3[0] == 'var':
+                        self.izin3[0]='yok'
+                    if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-j and self.izin4[0] == 'var':
+                        self.izin4[0]='yok'
+                if self.izint[0] != 'yok' or self.izint[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]+j,self.etkin_konum[1]])
+                    self.izint[1] = '0'
+                if self.izini[0] != 'yok' or self.izini[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]+j])
+                    self.izini[1] = '0'
+                if self.izin3[0] != 'yok' or self.izin3[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]-j,self.etkin_konum[1]])
+                    self.izin3[1] = '0'
+                if self.izin4[0] != 'yok' or self.izin4[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]-j])
+                    self.izin4[1] = '0'
+        elif self.sira == 'siyah':                          
+            for j in range(100,800,100):
+                for i in range(len(self.taslarin_konumlari_siyah)):
+                        if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1] and self.izint[0] == 'var':
+                            self.izint[0]='yok'
+                            self.izint[1] = '1'
+                        if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+j and self.izini[0] == 'var':
+                            self.izini[0]='yok'
+                            self.izini[1] = '1'
+                        if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1] and self.izin3[0] == 'var':
+                            self.izin3[0]='yok'
+                            self.izin3[1] = '1'
+                        if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-j and self.izin4[0] == 'var':
+                            self.izin4[1] = '1'
+                            self.izin4[0] = 'yok'
+                for i in range(len(self.taslarin_konumlari_beyaz)):
+                    if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]+j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1] and self.izint[0] == 'var':
+                        self.izint[0]='yok'
+                    if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+j and self.izini[0] == 'var':
+                        self.izini[0]='yok'
+                    if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0]-j and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1] and self.izin3[0] == 'var':
+                        self.izin3[0]='yok'
+                    if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-j and self.izin4[0] == 'var':
+                        self.izin4[0]='yok'
+                if self.izint[0] != 'yok' or self.izint[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]+j,self.etkin_konum[1]])
+                    self.izint[1] = '0'
+                if self.izini[0] != 'yok' or self.izini[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]+j])
+                    self.izini[1] = '0'
+                if self.izin3[0] != 'yok' or self.izin3[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]-j,self.etkin_konum[1]])
+                    self.izin3[1] = '0'
+                if self.izin4[0] != 'yok' or self.izin4[1]  == '1':
+                    self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]-j])
+                    self.izin4[1] = '0'
         return self.gidilebilir_yerler
     def mousePressEvent(self, event):
         
@@ -195,12 +360,24 @@ class Win(QMainWindow):
                 if self.etkin_tas == self.piyon[i]:
                     self.gidilebilir_yerler = self.piyon_hareketi()
                     print(self.gidilebilir_yerler)
+                    break
             for i in range(4):
                 if self.etkin_tas == self.fil[i]:
-                    self.gidilebilir_yerler = self.piyon_hareketi()
+                    self.gidilebilir_yerler = self.fil_hareketi()
                     print(self.gidilebilir_yerler)
+                    break
+                if self.etkin_tas == self.kale[i]:
+                    self.gidilebilir_yerler = self.kale_hareketi()
+                    print(self.gidilebilir_yerler)
+                    break
+            for i in range(2):
+                if self.etkin_tas == self.vezir[i]:
+                    self.gidilebilir_yerler = self.fil_hareketi()
+                    self.gidilebilir_yerler.extend(self.kale_hareketi())
+                    
             for gidilebilir_yer in self.gidilebilir_yerler:
                 qp.drawPixmap(gidilebilir_yer[0],gidilebilir_yer[1],100,100,self.image_gidilebilir_yerler)
+
             self.a = 2
 
         if  self.a == 3:
