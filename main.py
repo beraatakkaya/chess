@@ -80,6 +80,7 @@ class Win(QMainWindow):
         self.yenilebilir_taslar = []
         self.yenilen_tas = []
 
+
         self.initUI()
     def yuvarlama(self,sayi):
         
@@ -101,13 +102,19 @@ class Win(QMainWindow):
             for i in range(len(self.taslarin_konumlari_beyaz)):
                 if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-100:
                     self.izint[0] = 'yok'
+                    self.izini[0] = 'yok'
                 if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]-200:
                     self.izini[0] = 'yok'
             for i in range(len(self.taslarin_konumlari_siyah)):
                 if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-100:
                     self.izint[0] = 'yok'
+                    self.izini[0] = 'yok'
                 if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]-200:
                     self.izini[0] = 'yok'
+                if self.etkin_konum[0]+100 == self.taslarin_konumlari_siyah[i][1] and self.etkin_konum[1]-100 == self.taslarin_konumlari_siyah[i][2]:
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]+100,self.etkin_konum[1]-100])
+                if self.etkin_konum[0]-100 == self.taslarin_konumlari_siyah[i][1] and self.etkin_konum[1]-100 == self.taslarin_konumlari_siyah[i][2]:
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]-100,self.etkin_konum[1]-100])
             if self.izint[0] != 'yok':
                 self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]-100])
                 self.izint[0] = 'var'
@@ -119,11 +126,18 @@ class Win(QMainWindow):
             for i in range(len(self.taslarin_konumlari_beyaz)):
                 if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+100:
                     self.izint[0] = 'yok'
+                    self.izini[0] = 'yok'
                 if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+200:
                     self.izini[0] = 'yok'
+                if self.etkin_konum[0]-100 == self.taslarin_konumlari_beyaz[i][1] and self.etkin_konum[1]+100 == self.taslarin_konumlari_beyaz[i][2]:
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]-100,self.etkin_konum[1]+100])
+                if self.etkin_konum[0]+100 == self.taslarin_konumlari_beyaz[i][1] and self.etkin_konum[1]+100 == self.taslarin_konumlari_beyaz[i][2]:
+                    self.gidilebilir_yerler.append([self.etkin_konum[0]+100,self.etkin_konum[1]+100])
+
             for i in range(len(self.taslarin_konumlari_siyah)):
                 if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+100:
                     self.izint[0] = 'yok'
+                    self.izini = 'yok'
                 if self.taslarin_konumlari_siyah[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_siyah[i][2]==self.etkin_konum[1]+200:
                     self.izini[0] = 'yok'
             if self.izint[0] != 'yok':
@@ -372,16 +386,30 @@ class Win(QMainWindow):
                                 
             else:
                 self.gidecegi_yer = [self.mouse_x_yuvarlanmis,self.mouse_y_yuvarlanmis]
-                for i in range(len(self.gidilebilir_yerler)):
-                    if self.gidecegi_yer[0] == self.gidilebilir_yerler[i][0] and self.gidecegi_yer[1] == self.gidilebilir_yerler[i][1]:
-                        print('calisti')
-                        self.a = 3
-                        self.ilk_dokunus = 'tiklama'
-                        self.gidilebilir_yerler = []
+                if self.gidecegi_yer[0] == self.etkin_konum[0] and self.gidecegi_yer[1] == self.etkin_konum[1]:
+                    self.ilk_dokunus = 'tiklama'
+                    self.a =1
+                    self.sira = 'siyah'
+                    self.gidilebilir_yerler=[]
+                    print('sira degistirildi')
+                for siyah_tas in self.taslarin_konumlari_siyah:
+                    if self.gidecegi_yer[0] == siyah_tas[1] and self.gidecegi_yer[1] == siyah_tas[2]:
+                        self.etkin_tas = siyah_tas[0]
+                        self.ilk_dokunus = 'gitme'
+                        self.sira = 'beyaz'
+                        self.gidilebilir_yerler=[]
+                        self.etkin_konum = [self.gidecegi_yer[0],self.gidecegi_yer[1]]
+                        print('deneme basarili')
                         self.repaint()
-                        break
-                self.ilk_dokunus = 'tiklama'
-                self.sira = 'beyaz'
+                else:
+                    for i in range(len(self.gidilebilir_yerler)):
+                        if self.gidecegi_yer[0] == self.gidilebilir_yerler[i][0] and self.gidecegi_yer[1] == self.gidilebilir_yerler[i][1]:
+                            print('calisti')
+                            self.a = 3
+                            self.ilk_dokunus = 'tiklama'
+                            self.gidilebilir_yerler = []
+                            self.repaint()
+                            break
         elif self.sira == 'siyah':
             if self.ilk_dokunus == 'tiklama':
                 for i in range(len(self.taslarin_konumlari_siyah)):
@@ -395,16 +423,31 @@ class Win(QMainWindow):
                                 self.repaint()
             else:
                 self.gidecegi_yer = [self.mouse_x_yuvarlanmis,self.mouse_y_yuvarlanmis]
-                for i in range(len(self.gidilebilir_yerler)):
-                    if self.gidecegi_yer[0] == self.gidilebilir_yerler[i][0] and self.gidecegi_yer[1] == self.gidilebilir_yerler[i][1]:
-                        print('calistia')
-                        self.a = 3
-                        self.ilk_dokunus = 'tiklama'
-                        self.gidilebilir_yerler = []
+                if self.gidecegi_yer[0] == self.etkin_konum[0] and self.gidecegi_yer[1] == self.etkin_konum[1]:
+                    self.ilk_dokunus = 'tiklama'
+                    self.a =1
+                    self.sira = 'beyaz'
+                    self.gidilebilir_yerler=[]
+                    print('sira degistirildi')
+                for beyaz_tas in self.taslarin_konumlari_beyaz:
+                    if self.gidecegi_yer[0] == beyaz_tas[1] and self.gidecegi_yer[1] == beyaz_tas[2]:
+                        print('deneme basarili')
+                        self.etkin_tas = beyaz_tas[0]
+                        self.ilk_dokunus = 'gitme'
+                        self.sira = 'siyah'
+                        self.gidilebilir_yerler=[]
+                        self.etkin_konum = [self.gidecegi_yer[0],self.gidecegi_yer[1]]
                         self.repaint()
-                        break
-                self.ilk_dokunus = 'tiklama'
-                self.sira = 'siyah'
+
+                else:
+                    for i in range(len(self.gidilebilir_yerler)):
+                        if self.gidecegi_yer[0] == self.gidilebilir_yerler[i][0] and self.gidecegi_yer[1] == self.gidilebilir_yerler[i][1]:
+                            print('calistia')
+                            self.a = 3
+                            self.ilk_dokunus = 'tiklama'
+                            self.gidilebilir_yerler = []
+                            self.repaint()
+                            break
 
     def paintEvent(self,event):
         qp = QPainter()
