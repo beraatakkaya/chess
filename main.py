@@ -574,14 +574,11 @@ class Win(QMainWindow):
                                 if self.etkin_tas == self.gecerken_alma[1][0]:
                                     self.gidilebilir_yerler.extend([self.gecerken_alma[2]])
                                     self.yenilebilir_taslar.extend([self.gecerken_alma[1]])
-                                    self.gecerken_alma[0] = 'yok'
                         else:
                             if self.gecerken_alma[0] == 'var':
                                 if self.etkin_tas == self.gecerken_alma[1][0]:
                                     self.gidilebilir_yerler.extend([self.gecerken_alma[2]])
                                     self.yenilebilir_taslar.extend([self.gecerken_alma[1]])
-                                    self.gecerken_alma[0] = 'yok'
-                                    
                         break
                 for i in range(len(self.fil)):
                     if self.etkin_tas == self.fil[i]:
@@ -662,11 +659,16 @@ class Win(QMainWindow):
                                             self.gecerken_alma[1] = [siyah_tas[0],self.gidecegi_yer[0],500]
                                             self.gecerken_alma[2] = [self.gidecegi_yer[0],500]
                                             self.gecerken_alma[3] = [self.etkin_tas]
-                    if self.etkin_tas ==  self.gecerken_alma[1][0]:
-                        if self.gidecegi_yer[0] == self.gecerken_alma[2][0] and  self.gidecegi_yer[1] == self.gecerken_alma[2][1] :
-                            for siyah_tas in self.taslarin_konumlari_siyah:
-                                        if siyah_tas[0] == self.gecerken_alma[3][0]:
-                                            self.taslarin_konumlari_siyah.remove(siyah_tas)
+                    elif self.gecerken_alma[0] == 'var':
+                        if self.etkin_tas ==  self.gecerken_alma[1][0]:
+                            if self.gidecegi_yer[0] == self.gecerken_alma[2][0] and  self.gidecegi_yer[1] == self.gecerken_alma[2][1] :
+                                for siyah_tas in self.taslarin_konumlari_siyah:
+                                            if siyah_tas[0] == self.gecerken_alma[3][0]:
+                                                self.taslarin_konumlari_siyah.remove(siyah_tas)
+                                                self.gecerken_alma[0] = 'yok'
+                        else:
+                            self.gecerken_alma[0] = 'yok'
+
 
                     # for siyah_tas in self.taslarin_konumlari_siyah:
                     #     if self.etkin_konum[1] == 600 and self.gidecegi_yer[1] == 400:
@@ -698,11 +700,17 @@ class Win(QMainWindow):
                                             self.gecerken_alma[1] = [beyaz_tas[0],self.gidecegi_yer[0],200]
                                             self.gecerken_alma[2] = [self.gidecegi_yer[0],200]
                                             self.gecerken_alma[3] = [self.etkin_tas]
-                    if self.etkin_tas ==  self.gecerken_alma[1][0]:
-                        if self.gidecegi_yer[0] == self.gecerken_alma[2][0] and  self.gidecegi_yer[1] == self.gecerken_alma[2][1] :
-                            for beyaz_tas in self.taslarin_konumlari_beyaz:
-                                        if beyaz_tas[0] == self.gecerken_alma[3][0]:
-                                            self.taslarin_konumlari_beyaz.remove(beyaz_tas)
+                    elif self.gecerken_alma[0] == 'var':                   
+                        if self.etkin_tas ==  self.gecerken_alma[1][0]:
+                            if self.gidecegi_yer[0] == self.gecerken_alma[2][0] and  self.gidecegi_yer[1] == self.gecerken_alma[2][1] :
+                                for beyaz_tas in self.taslarin_konumlari_beyaz:
+                                            if beyaz_tas[0] == self.gecerken_alma[3][0]:
+                                                self.taslarin_konumlari_beyaz.remove(beyaz_tas)
+                                                self.gecerken_alma[0] = 'yok'
+                        else:
+                            self.gecerken_alma[0] = 'yok'
+                        
+
 
                     self.taslarin_konumlari_beyaz = [tas for tas in self.taslarin_konumlari_beyaz if not (tas[1] == self.mouse_x_yuvarlanmis and tas[2] == self.mouse_y_yuvarlanmis)]
 
