@@ -64,6 +64,9 @@ class Win(QMainWindow):
 
         self.image_siyah_sah = QPixmap('./siyah_sah.png')
 
+        self.image_secim_ekrani_beyaz = QPixmap('./secim_ekrani_beyaz.png')
+        self.image_secim_ekrani_siyah = QPixmap('./secme_ekrani_siyah.png') 
+
         self.piyon = [self.image_beyaz_piyon1,self.image_beyaz_piyon2,self.image_beyaz_piyon3,self.image_beyaz_piyon4,self.image_beyaz_piyon5,self.image_beyaz_piyon6,self.image_beyaz_piyon7,self.image_beyaz_piyon8,self.image_siyah_piyon1,self.image_siyah_piyon2,self.image_siyah_piyon3,self.image_siyah_piyon4,self.image_siyah_piyon5,self.image_siyah_piyon6,self.image_siyah_piyon7,self.image_siyah_piyon8]
         self.kale = [self.image_beyaz_kale1,self.image_beyaz_kale2,self.image_siyah_kale1,self.image_siyah_kale2]
         self.at = [self.image_beyaz_at1,self.image_beyaz_at2,self.image_siyah_at1,self.image_siyah_at2]
@@ -77,6 +80,14 @@ class Win(QMainWindow):
         self.izini = ['var','0']
         self.izin3 = ['var','0']
         self.izin4 = ['var','0']
+        self.gecerken_alma_ihtimali_var = 'yok'
+        self.gecerken_alma = ['yok','a','b','c']
+        self.piyon_atama = 'hayir'
+        self.secim_iznib = 'yok'
+        self.secim_iznis = 'yok'
+        self.piyon_mu = 'degil'
+        self.tahta_yazdirma = 'hayir'
+
         self.yenilebilir_taslar = []
         self.yenilen_tas = []
 
@@ -122,6 +133,10 @@ class Win(QMainWindow):
                 if self.etkin_konum[1] == 600:
                         self.gidilebilir_yerler.append([self.etkin_konum[0],self.etkin_konum[1]-200])
                         self.izini[0] = 'var'
+                        for siyah_tas in self.taslarin_konumlari_siyah:
+                            if (self.etkin_konum[0]-100 == siyah_tas[1] and self.etkin_konum[1]-200 == siyah_tas[2]) or \
+                                (self.etkin_konum[0]+100 == siyah_tas[1] and self.etkin_konum[1]-200 == siyah_tas[2]):
+                                self.gecerken_alma_ihtimali_var = 'var'
         elif self.sira == 'beyaz':
             for i in range(len(self.taslarin_konumlari_beyaz)):
                 if self.taslarin_konumlari_beyaz[i][1] ==  self.etkin_konum[0] and self.taslarin_konumlari_beyaz[i][2]==self.etkin_konum[1]+100:
@@ -372,6 +387,83 @@ class Win(QMainWindow):
 
         self.mouse_x_yuvarlanmis = self.yuvarlama(self.mouse_click_x[0])
         self.mouse_y_yuvarlanmis = self.yuvarlama(self.mouse_click_y[0])
+        if self.piyon_atama == 'evet':
+            if self.sira == 'beyaz':
+                if self.mouse_y_yuvarlanmis == 300:
+                    for siyah_tas in self.taslarin_konumlari_siyah:
+                        if siyah_tas[0] == self.etkin_tas:
+                            self.piyon.remove(siyah_tas[0])
+                            siyah_tas[0] = QPixmap('./siyah_vezir.png')
+                            self.vezir.append(siyah_tas[0])
+                            self.piyon_atama = 'hayir'
+                            self.tahta_yazdirma = 'evet'
+                            self.repaint()
+                            
+                elif self.mouse_y_yuvarlanmis == 400:
+                   for siyah_tas in self.taslarin_konumlari_siyah:
+                        if siyah_tas[0] == self.etkin_tas:
+                            self.piyon.remove(siyah_tas[0])
+                            siyah_tas[0] = QPixmap('./siyah_at.png')
+                            self.at.append(siyah_tas[0])
+                            self.piyon_atama = 'hayir'
+                            self.tahta_yazdirma = 'evet'
+                            self.repaint()
+
+                elif self.mouse_y_yuvarlanmis == 500:
+                    for siyah_tas in self.taslarin_konumlari_siyah:
+                        if siyah_tas[0] == self.etkin_tas:
+                            self.piyon.remove(siyah_tas[0])
+                            siyah_tas[0] = QPixmap('./siyah_kale.png')
+                            self.kale.append(siyah_tas[0])
+                            self.piyon_atama = 'hayir'
+                            self.tahta_yazdirma = 'evet'
+                            self.repaint()
+                elif self.mouse_y_yuvarlanmis == 600:
+                    for siyah_tas in self.taslarin_konumlari_siyah:
+                        if siyah_tas[0] == self.etkin_tas:
+                            self.piyon.remove(siyah_tas[0])
+                            siyah_tas[0] = QPixmap('./siyah_fil.png')
+                            self.fil.append(siyah_tas[0])
+                            self.piyon_atama = 'hayir'
+                            self.tahta_yazdirma = 'evet'
+                            self.repaint()
+            else:
+                if self.mouse_y_yuvarlanmis == 100:
+                    for beyaz_tas in self.taslarin_konumlari_beyaz:
+                        if beyaz_tas[0] == self.etkin_tas:
+                            self.piyon.remove(beyaz_tas[0])
+                            beyaz_tas[0] = QPixmap('./beyaz_vezir.png')
+                            self.vezir.append(beyaz_tas[0])
+                            self.piyon_atama = 'hayir'
+                            self.tahta_yazdirma = 'evet'
+                            self.repaint()
+                elif self.mouse_y_yuvarlanmis == 200:
+                    for beyaz_tas in self.taslarin_konumlari_beyaz:
+                        if beyaz_tas[0] == self.etkin_tas:
+                            self.piyon.remove(beyaz_tas[0])
+                            beyaz_tas[0] = QPixmap('./beyaz_at.png')
+                            self.at.append(beyaz_tas[0])
+                            self.piyon_atama = 'hayir'
+                            self.tahta_yazdirma = 'evet'
+                            self.repaint()
+                elif self.mouse_y_yuvarlanmis == 300:
+                    for beyaz_tas in self.taslarin_konumlari_beyaz:
+                        if beyaz_tas[0] == self.etkin_tas:
+                            self.piyon.remove(beyaz_tas[0])
+                            beyaz_tas[0] = QPixmap('./beyaz_kale.png')
+                            self.fil.append(beyaz_tas[0])
+                            self.piyon_atama = 'hayir'
+                            self.tahta_yazdirma = 'evet'
+                            self.repaint()
+                elif self.mouse_y_yuvarlanmis == 400:
+                    for beyaz_tas in self.taslarin_konumlari_beyaz:
+                        if beyaz_tas[0] == self.etkin_tas:
+                            self.piyon.remove(beyaz_tas[0])
+                            beyaz_tas[0] = QPixmap('./beyaz_fil.png')
+                            self.kale.append(beyaz_tas[0])
+                            self.piyon_atama = 'hayir'
+                            self.tahta_yazdirma = 'evet'
+                            self.repaint()
         if self.sira == 'beyaz':
             if self.ilk_dokunus == 'tiklama':
                 for i in range(len(self.taslarin_konumlari_beyaz)):
@@ -391,13 +483,14 @@ class Win(QMainWindow):
                     self.a =1
                     self.sira = 'siyah'
                     self.gidilebilir_yerler=[]
-                    print('sira degistirildi')
+                    self.tahta_yazdirma = 'evet'
                 for siyah_tas in self.taslarin_konumlari_siyah:
                     if self.gidecegi_yer[0] == siyah_tas[1] and self.gidecegi_yer[1] == siyah_tas[2]:
                         self.etkin_tas = siyah_tas[0]
                         self.ilk_dokunus = 'gitme'
                         self.sira = 'beyaz'
                         self.gidilebilir_yerler=[]
+                        self.yenilebilir_taslar=[]
                         self.etkin_konum = [self.gidecegi_yer[0],self.gidecegi_yer[1]]
                         print('deneme basarili')
                         self.repaint()
@@ -428,7 +521,7 @@ class Win(QMainWindow):
                     self.a =1
                     self.sira = 'beyaz'
                     self.gidilebilir_yerler=[]
-                    print('sira degistirildi')
+                    self.tahta_yazdirma = 'evet'
                 for beyaz_tas in self.taslarin_konumlari_beyaz:
                     if self.gidecegi_yer[0] == beyaz_tas[1] and self.gidecegi_yer[1] == beyaz_tas[2]:
                         print('deneme basarili')
@@ -436,7 +529,8 @@ class Win(QMainWindow):
                         self.ilk_dokunus = 'gitme'
                         self.sira = 'siyah'
                         self.gidilebilir_yerler=[]
-                        self.etkin_konum = [self.gidecegi_yer[0],self.gidecegi_yer[1]]
+                        self.yenilebilir_taslar=[]
+                        self.etkin_konum = [self.gidecegi_yer[0],self.gidecegi_yer[1]]                       
                         self.repaint()
 
                 else:
@@ -463,94 +557,182 @@ class Win(QMainWindow):
 
         qp.begin(self)
         qp.drawPixmap(self.rect(),self.image)
+        if self.tahta_yazdirma == 'evet':
+            for i in range(len(self.taslarin_konumlari_beyaz)):
+                qp.drawPixmap(self.taslarin_konumlari_beyaz[i][1],self.taslarin_konumlari_beyaz[i][2],100,100,self.taslarin_konumlari_beyaz[i][0])
+            for i in range (len(self.taslarin_konumlari_siyah)):
+                qp.drawPixmap(self.taslarin_konumlari_siyah[i][1],self.taslarin_konumlari_siyah[i][2],100,100,self.taslarin_konumlari_siyah[i][0])
+            self.tahta_yazdirma = 'hayir'
+        else:
+            if self.ilk_dokunus == 'gitme':
+                qp.drawPixmap(self.etkin_konum[0],self.etkin_konum[1],100,100,self.image_secili_bolge)
+                for i in range(len(self.piyon)):
+                    if self.etkin_tas == self.piyon[i]:
+                        self.gidilebilir_yerler = self.piyon_hareketi()
+                        if self.sira == 'beyaz':
+                            if self.gecerken_alma[0] == 'var':
+                                if self.etkin_tas == self.gecerken_alma[1][0]:
+                                    self.gidilebilir_yerler.extend([self.gecerken_alma[2]])
+                                    self.yenilebilir_taslar.extend([self.gecerken_alma[1]])
+                                    self.gecerken_alma[0] = 'yok'
+                        else:
+                            if self.gecerken_alma[0] == 'var':
+                                if self.etkin_tas == self.gecerken_alma[1][0]:
+                                    self.gidilebilir_yerler.extend([self.gecerken_alma[2]])
+                                    self.yenilebilir_taslar.extend([self.gecerken_alma[1]])
+                                    self.gecerken_alma[0] = 'yok'
+                                    
+                        break
+                for i in range(len(self.fil)):
+                    if self.etkin_tas == self.fil[i]:
+                        self.gidilebilir_yerler = self.fil_hareketi()
+                        break
+                for i in range(len(self.kale)):
+                    if self.etkin_tas == self.kale[i]:
+                        self.gidilebilir_yerler = self.kale_hareketi()
+                        break
+                for i in range(len(self.at)):
+                    if self.etkin_tas == self.at[i]:
+                        self.gidilebilir_yerler = self.at_hareketi()
+                        break
+                for i in range(len(self.vezir)):
+                    if self.etkin_tas == self.vezir[i]:
+                        self.gidilebilir_yerler = self.fil_hareketi()
+                        self.gidilebilir_yerler.extend(self.kale_hareketi())
+                        break
+                for i in range(2):
+                    if self.etkin_tas == self.sah[i]:
+                        self.gidilebilir_yerler = self.sah_hareketi()
+                        break
 
-        if self.ilk_dokunus == 'gitme':
-            qp.drawPixmap(self.etkin_konum[0],self.etkin_konum[1],100,100,self.image_secili_bolge)
-            for i in range(16):
-                if self.etkin_tas == self.piyon[i]:
-                    self.gidilebilir_yerler = self.piyon_hareketi()
-                    break
-            for i in range(4):
-                if self.etkin_tas == self.fil[i]:
-                    self.gidilebilir_yerler = self.fil_hareketi()
-                    break
-                elif self.etkin_tas == self.kale[i]:
-                    self.gidilebilir_yerler = self.kale_hareketi()
-                    break
-                elif self.etkin_tas == self.at[i]:
-                    self.gidilebilir_yerler = self.at_hareketi()
-                    break
-            for i in range(2):
-                if self.etkin_tas == self.vezir[i]:
-                    self.gidilebilir_yerler = self.fil_hareketi()
-                    self.gidilebilir_yerler.extend(self.kale_hareketi())
-                elif self.etkin_tas == self.sah[i]:
-                    self.gidilebilir_yerler = self.sah_hareketi()
-                
-            for gidilebilir_yer in self.gidilebilir_yerler:
-                if self.sira == 'beyaz':
-                    for beyaz_tas in self.taslarin_konumlari_beyaz:
-                        
-                        if gidilebilir_yer[0] == beyaz_tas[1] and gidilebilir_yer[1] == beyaz_tas[2]:
-                            self.yenilebilir_taslar.append(beyaz_tas)
-                            break
+                for gidilebilir_yer in self.gidilebilir_yerler:
+                    if self.sira == 'beyaz':
+                        for beyaz_tas in self.taslarin_konumlari_beyaz:
+                            
+                            if gidilebilir_yer[0] == beyaz_tas[1] and gidilebilir_yer[1] == beyaz_tas[2]:
+                                self.yenilebilir_taslar.append(beyaz_tas)
+                                break
+                        else:
+                            qp.drawPixmap(gidilebilir_yer[0]+15,gidilebilir_yer[1]+15,70,70,self.image_gidilebilir_yerler)
+
                     else:
-                        qp.drawPixmap(gidilebilir_yer[0]+15,gidilebilir_yer[1]+15,70,70,self.image_gidilebilir_yerler)
+                        for siyah_tas in self.taslarin_konumlari_siyah:
+                            if gidilebilir_yer[0] == siyah_tas[1] and gidilebilir_yer[1] == siyah_tas[2]:
+                                self.yenilebilir_taslar.append(siyah_tas)
+                                break
+                        else:
+                            qp.drawPixmap(gidilebilir_yer[0]+15,gidilebilir_yer[1]+15,70,70,self.image_gidilebilir_yerler)
 
+                for yenilebilir_tas in self.yenilebilir_taslar:
+                    qp.drawPixmap(yenilebilir_tas[1]-5,yenilebilir_tas[2]-5,30,30,self.image_sol_ust)
+                    qp.drawPixmap(yenilebilir_tas[1]+75,yenilebilir_tas[2]-5,30,30,self.image_sag_ust)
+                    qp.drawPixmap(yenilebilir_tas[1]-5,yenilebilir_tas[2]+75,30,30,self.image_sol_alt)
+                    qp.drawPixmap(yenilebilir_tas[1]+75,yenilebilir_tas[2]+75,30,30,self.image_sag_alt)
+                self.a = 2
+                print(self.gidilebilir_yerler)
+            
+            
+            if  self.a == 3:
+                # for i in range(len(self.yenilebilir_taslar)):
+                #     print('girdi')
+                #     if self.gidecegi_yer[0] == self.yenilebilir_taslar[i][1] and self.gidecegi_yer[1] == self.yenilebilir_taslar[i][2]:
+                #         self.yenilen_tas.append([self.yenilebilir_taslar[i][0],self.yenilebilir_taslar[i][1],self.yenilebilir_taslar[i][2]])
+                # print(self.yenilen_tas)
+                # qp.drawPixmap(self.mouse_x_yuvarlanmis,self.mouse_y_yuvarlanmis,100,100,self.etkin_tas)
+                qp.drawPixmap(self.gidecegi_yer[0],self.gidecegi_yer[1],100,100,self.image_gittigi_yer)
+
+                if self.sira == 'siyah':
+                    for i in range(len(self.taslarin_konumlari_beyaz)):
+                        if self.taslarin_konumlari_beyaz[i][0] == self.etkin_tas:
+                            self.taslarin_konumlari_beyaz[i][1]= self.mouse_x_yuvarlanmis
+                            self.taslarin_konumlari_beyaz[i][2] = self.mouse_y_yuvarlanmis
+                    if self.gidecegi_yer[1] == 0:
+                        for i in range(len(self.piyon)):
+                            if self.etkin_tas == self.piyon[i]:
+                                self.secim_iznib = 'var'
+                                print('basitt')
+                    if self.etkin_konum[1] == 600:
+                        if self.gidecegi_yer[1] ==  400:
+                            for i in range(len(self.piyon)):
+                                if self.etkin_tas == self.piyon[i]:
+                                    for siyah_tas in self.taslarin_konumlari_siyah:
+                                        if (siyah_tas[1] == self.gidecegi_yer[0]-100 and siyah_tas[2] == 400) or\
+                                            (siyah_tas[1] == self.gidecegi_yer[0]+100 and siyah_tas[2] == 400):
+                                            self.gecerken_alma[0] = 'var'
+                                            self.gecerken_alma[1] = [siyah_tas[0],self.gidecegi_yer[0],500]
+                                            self.gecerken_alma[2] = [self.gidecegi_yer[0],500]
+                                            self.gecerken_alma[3] = [self.etkin_tas]
+                    if self.etkin_tas ==  self.gecerken_alma[1][0]:
+                        if self.gidecegi_yer[0] == self.gecerken_alma[2][0] and  self.gidecegi_yer[1] == self.gecerken_alma[2][1] :
+                            for siyah_tas in self.taslarin_konumlari_siyah:
+                                        if siyah_tas[0] == self.gecerken_alma[3][0]:
+                                            self.taslarin_konumlari_siyah.remove(siyah_tas)
+
+                    # for siyah_tas in self.taslarin_konumlari_siyah:
+                    #     if self.etkin_konum[1] == 600 and self.gidecegi_yer[1] == 400:
+                    #         if (self.gidecegi_yer[0]+100 == siyah_tas[1] and self.gidecegi_yer[1] == siyah_tas[2]) or\
+                    #              (self.gidecegi_yer[0]-100 == siyah_tas[1] and self.gidecegi_yer[1] == siyah_tas[2]):
+                    #              self.gecerken_alma[0] = 'var'
+                    #              self.gecerken_alma.append([siyah_tas])
+                                 
+
+                    self.taslarin_konumlari_siyah = [tas for tas in self.taslarin_konumlari_siyah if not (tas[1] == self.mouse_x_yuvarlanmis and tas[2] == self.mouse_y_yuvarlanmis)]
                 else:
-                    for siyah_tas in self.taslarin_konumlari_siyah:
-                        if gidilebilir_yer[0] == siyah_tas[1] and gidilebilir_yer[1] == siyah_tas[2]:
-                            self.yenilebilir_taslar.append(siyah_tas)
-                            break
-                    else:
-                        qp.drawPixmap(gidilebilir_yer[0]+15,gidilebilir_yer[1]+15,70,70,self.image_gidilebilir_yerler)
+                    for i in range(len(self.taslarin_konumlari_siyah)):
+                        if self.taslarin_konumlari_siyah[i][0] == self.etkin_tas:
+                            self.taslarin_konumlari_siyah[i][1]= self.mouse_x_yuvarlanmis
+                            self.taslarin_konumlari_siyah[i][2] = self.mouse_y_yuvarlanmis
+                    if self.gidecegi_yer[1] == 700:
+                        for i in range(len(self.piyon)):
+                            if self.etkin_tas == self.piyon[i]:
+                                self.secim_iznis = 'var'
+                                print('kolaydi')
+                    if self.etkin_konum[1] == 100:
+                        if self.gidecegi_yer[1] ==  300:
+                            for i in range(len(self.piyon)):
+                                if self.etkin_tas == self.piyon[i]:
+                                    for beyaz_tas in self.taslarin_konumlari_beyaz:
+                                        if (beyaz_tas[1] == self.gidecegi_yer[0]-100 and beyaz_tas[2] == 300) or\
+                                            (beyaz_tas[1] == self.gidecegi_yer[0]+100 and beyaz_tas[2] == 300):
+                                            self.gecerken_alma[0] = 'var'
+                                            self.gecerken_alma[1] = [beyaz_tas[0],self.gidecegi_yer[0],200]
+                                            self.gecerken_alma[2] = [self.gidecegi_yer[0],200]
+                                            self.gecerken_alma[3] = [self.etkin_tas]
+                    if self.etkin_tas ==  self.gecerken_alma[1][0]:
+                        if self.gidecegi_yer[0] == self.gecerken_alma[2][0] and  self.gidecegi_yer[1] == self.gecerken_alma[2][1] :
+                            for beyaz_tas in self.taslarin_konumlari_beyaz:
+                                        if beyaz_tas[0] == self.gecerken_alma[3][0]:
+                                            self.taslarin_konumlari_beyaz.remove(beyaz_tas)
 
-            for yenilebilir_tas in self.yenilebilir_taslar:
-                qp.drawPixmap(yenilebilir_tas[1]-5,yenilebilir_tas[2]-5,30,30,self.image_sol_ust)
-                qp.drawPixmap(yenilebilir_tas[1]+75,yenilebilir_tas[2]-5,30,30,self.image_sag_ust)
-                qp.drawPixmap(yenilebilir_tas[1]-5,yenilebilir_tas[2]+75,30,30,self.image_sol_alt)
-                qp.drawPixmap(yenilebilir_tas[1]+75,yenilebilir_tas[2]+75,30,30,self.image_sag_alt)
-            self.a = 2
-            print(self.gidilebilir_yerler)
-        
-        
-        if  self.a == 3:
-            # for i in range(len(self.yenilebilir_taslar)):
-            #     print('girdi')
-            #     if self.gidecegi_yer[0] == self.yenilebilir_taslar[i][1] and self.gidecegi_yer[1] == self.yenilebilir_taslar[i][2]:
-            #         self.yenilen_tas.append([self.yenilebilir_taslar[i][0],self.yenilebilir_taslar[i][1],self.yenilebilir_taslar[i][2]])
-            # print(self.yenilen_tas)
-            # qp.drawPixmap(self.mouse_x_yuvarlanmis,self.mouse_y_yuvarlanmis,100,100,self.etkin_tas)
-            qp.drawPixmap(self.gidecegi_yer[0],self.gidecegi_yer[1],100,100,self.image_gittigi_yer)
+                    self.taslarin_konumlari_beyaz = [tas for tas in self.taslarin_konumlari_beyaz if not (tas[1] == self.mouse_x_yuvarlanmis and tas[2] == self.mouse_y_yuvarlanmis)]
 
-            if self.sira == 'siyah':
-                for i in range(len(self.taslarin_konumlari_beyaz)):
-                    if self.taslarin_konumlari_beyaz[i][0] == self.etkin_tas:
-                        self.taslarin_konumlari_beyaz[i][1]= self.mouse_x_yuvarlanmis
-                        self.taslarin_konumlari_beyaz[i][2] = self.mouse_y_yuvarlanmis
+                qp.drawPixmap(self.etkin_konum[0],self.etkin_konum[1],100,100,self.image_geldigi_yer)
 
-                self.taslarin_konumlari_siyah = [tas for tas in self.taslarin_konumlari_siyah if not (tas[1] == self.mouse_x_yuvarlanmis and tas[2] == self.mouse_y_yuvarlanmis)]
-            else:
-                for i in range(len(self.taslarin_konumlari_siyah)):
-                    if self.taslarin_konumlari_siyah[i][0] == self.etkin_tas:
-                        self.taslarin_konumlari_siyah[i][1]= self.mouse_x_yuvarlanmis
-                        self.taslarin_konumlari_siyah[i][2] = self.mouse_y_yuvarlanmis
-                               
-                self.taslarin_konumlari_beyaz = [tas for tas in self.taslarin_konumlari_beyaz if not (tas[1] == self.mouse_x_yuvarlanmis and tas[2] == self.mouse_y_yuvarlanmis)]
+                self.ilk_dokunus = 'tiklama'
+                self.a=1
+                self.yenilebilir_taslar = []
+                
+            
 
-            qp.drawPixmap(self.etkin_konum[0],self.etkin_konum[1],100,100,self.image_geldigi_yer)
-
-            self.ilk_dokunus = 'tiklama'
-            self.a=1
-            self.yenilebilir_taslar = []
-        
-
-        for i in range(len(self.taslarin_konumlari_beyaz)):
-            qp.drawPixmap(self.taslarin_konumlari_beyaz[i][1],self.taslarin_konumlari_beyaz[i][2],100,100,self.taslarin_konumlari_beyaz[i][0])
-        for i in range (len(self.taslarin_konumlari_siyah)):
-            qp.drawPixmap(self.taslarin_konumlari_siyah[i][1],self.taslarin_konumlari_siyah[i][2],100,100,self.taslarin_konumlari_siyah[i][0])
+            for i in range(len(self.taslarin_konumlari_beyaz)):
+                qp.drawPixmap(self.taslarin_konumlari_beyaz[i][1],self.taslarin_konumlari_beyaz[i][2],100,100,self.taslarin_konumlari_beyaz[i][0])
+            for i in range (len(self.taslarin_konumlari_siyah)):
+                qp.drawPixmap(self.taslarin_konumlari_siyah[i][1],self.taslarin_konumlari_siyah[i][2],100,100,self.taslarin_konumlari_siyah[i][0])
+            if self.secim_iznib == 'var':
+                qp.drawPixmap(self.gidecegi_yer[0],self.gidecegi_yer[1]+100,100,400,self.image_secim_ekrani_beyaz)
+                self.secim_iznib = 'yok'
+                self.piyon_mu = 'degil'
+                self.piyon_atama = 'evet'
+                print('nabiyon lann')
+            if self.secim_iznis == 'var':
+                qp.drawPixmap(self.gidecegi_yer[0],self.gidecegi_yer[1]-400,100,400,self.image_secim_ekrani_siyah)
+                self.secim_iznis = 'yok'
+                self.piyon_mu = 'degil'
+                self.piyon_atama = 'evet'
+                print('nabiyon lannn')
 
         qp.end()
+        
 
 app =QApplication(sys.argv)
 win = Win()
