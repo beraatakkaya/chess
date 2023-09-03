@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication,QMainWindow,QLabel
+from PyQt5.QtWidgets import QApplication,QMainWindow,QLabel,QMessageBox
 from PyQt5.QtGui import QPainter,QPixmap
 import sys
 
@@ -23,6 +23,7 @@ class Win(QMainWindow):
         self.image_sol_ust = QPixmap('./sol_ust.png')
 
         self.siyah_sah_sah = QPixmap('./siyah_sah_sah.png')
+        self.beyaz_sah_sah = QPixmap('./beyaz_sah_sah.png')
 
         self.image_beyaz_piyon1 = QPixmap('./beyaz_piyon.png')
         self.image_beyaz_piyon2 = QPixmap('./beyaz_piyon.png')
@@ -90,6 +91,9 @@ class Win(QMainWindow):
         self.secim_iznis = 'yok'
         self.piyon_mu = 'degil'
         self.tahta_yazdirma = 'hayir'
+        self.sah_cekildi_beyaz = False
+        self.sah_cekildi_siyah = False
+
         self.sahin_yeri = ['a','b']
         self.taslarin_gordugu_yerler = []
         self.rok_icin_tas_oynama = [[self.image_beyaz_kale1,'oynamadi'],[self.image_beyaz_kale2,'oynamadi'],[self.image_beyaz_sah,'oynamadi'],\
@@ -688,6 +692,11 @@ class Win(QMainWindow):
                             
                             if gidilebilir_yer[0] == beyaz_tas[1] and gidilebilir_yer[1] == beyaz_tas[2]:
                                 self.yenilebilir_taslar.append(beyaz_tas)
+                                if beyaz_tas[0] == self.image_beyaz_sah:
+                                    result = QMessageBox.question(self,'lichess','Oyun bitti, siyah kazandi! ',QMessageBox.Ok)
+                                    if (result == QMessageBox.Ok):
+                                        self.close()
+                                        QMessageBox.close()
                                 break
                         else:
                             qp.drawPixmap(gidilebilir_yer[0]+15,gidilebilir_yer[1]+15,70,70,self.image_gidilebilir_yerler)
@@ -696,6 +705,11 @@ class Win(QMainWindow):
                         for siyah_tas in self.taslarin_konumlari_siyah:
                             if gidilebilir_yer[0] == siyah_tas[1] and gidilebilir_yer[1] == siyah_tas[2]:
                                 self.yenilebilir_taslar.append(siyah_tas)
+                                if siyah_tas[0] == self.image_siyah_sah:
+                                    result = QMessageBox.question(self,'lichess','Oyun bitti, beyaz kazandi! ',QMessageBox.Ok)
+                                    if (result == QMessageBox.Ok):
+                                        self.close()
+                                        QMessageBox.close()
                                 break
                         else:
                             qp.drawPixmap(gidilebilir_yer[0]+15,gidilebilir_yer[1]+15,70,70,self.image_gidilebilir_yerler)
@@ -875,7 +889,7 @@ class Win(QMainWindow):
                     for gorulen_yer in self.taslarin_gordugu_yerler:
                         # qp.drawPixmap(gorulen_yer[0],gorulen_yer[1],100,100,self.image_siyaha_boyama)
                         if gorulen_yer == self.sahin_yeri[0]:
-                            qp.drawPixmap(self.sahin_yeri[0][0],self.sahin_yeri[0][1],100,100,self.siyah_sah_sah)
+                            self.sah_cekildi_siyah = True                        
                     self.gidilebilir_yerler = []
                 elif self.sira == 'beyaz':
                     for siyah_tas in self.taslarin_konumlari_siyah:
@@ -900,25 +914,20 @@ class Win(QMainWindow):
                         for i in range(len(self.sah)):
                             if self.sah[i] == siyah_tas[0]:
                                 self.taslarin_gordugu_yerler.extend(self.sah_hareketi())
-                    for siyah_tas in self.taslarin_konumlari_siyah:
+                    for beyaz_tas in self.taslarin_konumlari_beyaz:
                         for i in range(len(self.sah)):
-                            if siyah_tas[0] == self.sah[i]:
-                                self.sahin_yeri[0] = [siyah_tas[1],siyah_tas[2]]
+                            if beyaz_tas[0] == self.sah[i]:
+                                self.sahin_yeri[1] = [beyaz_tas[1],beyaz_tas[2]]
                     for gorulen_yer in self.taslarin_gordugu_yerler:
                         # qp.drawPixmap(gorulen_yer[0],gorulen_yer[1],100,100,self.image_siyaha_boyama)
-                        if gorulen_yer == self.sahin_yeri[0]:
-                            qp.drawPixmap(self.sahin_yeri[0][0],self.sahin_yeri[0][1],100,100,self.siyah_sah_sah)
+                        if gorulen_yer == self.sahin_yeri[1]:
+                            self.sah_cekildi_beyaz = True
                     print(self.taslarin_gordugu_yerler)
                     self.gidilebilir_yerler = []
                         
                 self.ilk_dokunus = 'tiklama'
                 self.a=1
                 self.yenilebilir_taslar = []
-        
-            for i in range(len(self.taslarin_konumlari_beyaz)):
-                qp.drawPixmap(self.taslarin_konumlari_beyaz[i][1],self.taslarin_konumlari_beyaz[i][2],100,100,self.taslarin_konumlari_beyaz[i][0])
-            for i in range (len(self.taslarin_konumlari_siyah)):
-                qp.drawPixmap(self.taslarin_konumlari_siyah[i][1],self.taslarin_konumlari_siyah[i][2],100,100,self.taslarin_konumlari_siyah[i][0])
             if self.secim_iznib == 'var':
                 qp.drawPixmap(self.gidecegi_yer[0],self.gidecegi_yer[1]+100,100,400,self.image_secim_ekrani_beyaz)
                 self.secim_iznib = 'yok'
@@ -929,7 +938,21 @@ class Win(QMainWindow):
                 self.secim_iznis = 'yok'
                 self.piyon_mu = 'degil'
                 self.piyon_atama = 'evet'
-            
+        for i in range(len(self.taslarin_konumlari_beyaz)):
+                if self.taslarin_konumlari_beyaz[i][0] != self.image_beyaz_sah or self.sah_cekildi_beyaz != True:
+                    qp.drawPixmap(self.taslarin_konumlari_beyaz[i][1],self.taslarin_konumlari_beyaz[i][2],100,100,self.taslarin_konumlari_beyaz[i][0])
+                else:
+                    qp.drawPixmap(self.sahin_yeri[1][0],self.sahin_yeri[1][1],100,100,self.beyaz_sah_sah)
+                    self.sah_cekildi_beyaz = False
+
+        for i in range (len(self.taslarin_konumlari_siyah)):
+            if self.taslarin_konumlari_siyah[i][0] != self.image_siyah_sah or self.sah_cekildi_siyah != True:
+                qp.drawPixmap(self.taslarin_konumlari_siyah[i][1],self.taslarin_konumlari_siyah[i][2],100,100,self.taslarin_konumlari_siyah[i][0])
+            else:
+                qp.drawPixmap(self.sahin_yeri[0][0],self.sahin_yeri[0][1],100,100,self.siyah_sah_sah)
+                self.sah_cekildi_siyah = False
+
+        
         qp.end()
 app =QApplication(sys.argv)
 win = Win()
