@@ -1,9 +1,8 @@
-a = [1, 3, 2, 5, 1, 3, 8, 7]
+def sayilari_yazdir(sayi, dahil=False):
+    if dahil:
+        sayi = sayi + 1
+    for i in range(sayi):
+        print(i)
 
-# for sayi in a:
-#     if sayi < 5:
-#         a.remove(sayi)
 
-a = [sayi for sayi in a if not (sayi < 5)]
-
-print(a)
+sayilari_yazdir(9, True)

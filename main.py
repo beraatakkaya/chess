@@ -93,6 +93,7 @@ class Win(QMainWindow):
         self.tahta_yazdirma = 'hayir'
         self.sah_cekildi_beyaz = False
         self.sah_cekildi_siyah = False
+        self.sah_ceken_tas = []
         self.beyaz_taslarin_gordugu_yerler = []
         self.siyah_taslarin_gordugu_yerler = []
 
@@ -690,6 +691,19 @@ class Win(QMainWindow):
                                             self.gidilebilir_yerler.append([600,0])
                         break
                     self.taslarin_gordugu_yerler = []
+
+                self.gidilebilir_yerler = [gidilebilir_yer for gidilebilir_yer in self.gidilebilir_yerler if not(gidilebilir_yer[0]>700 or gidilebilir_yer[0]<0 or\
+                    gidilebilir_yer[1]<100 or gidilebilir_yer[1]>700)]
+                
+                if self.sira == 'siyah' and self.sah_cekildi_beyaz == True and self.etkin_tas != self.image_beyaz_sah:
+                    for i in range(len(self.sah_ceken_tas)):
+                        self.gidilebilir_yerler = [gidilebilir_yer for gidilebilir_yer in self.gidilebilir_yerler if gidilebilir_yer[0] == self.sah_ceken_tas[i][1] and\
+                            gidilebilir_yer[1] == self.sah_ceken_tas[i][2]]
+                if self.sira == 'beyaz' and self.sah_cekildi_siyah == True and self.etkin_tas != self.image_siyah_sah:
+                    for i in range(len(self.sah_ceken_tas)):
+                        self.gidilebilir_yerler = [gidilebilir_yer for gidilebilir_yer in self.gidilebilir_yerler if gidilebilir_yer[0] == self.sah_ceken_tas[i][1] and\
+                            gidilebilir_yer[1] == self.sah_ceken_tas[i][2]]
+                        
                 for gidilebilir_yer in self.gidilebilir_yerler:
                     if self.sira == 'beyaz':
                         for beyaz_tas in self.taslarin_konumlari_beyaz:
@@ -728,6 +742,7 @@ class Win(QMainWindow):
             
             
             if  self.a == 3:
+                self.sah_ceken_tas = []
                 self.siyah_taslarin_gordugu_yerler = []
                 self.beyaz_taslarin_gordugu_yerler = []
                 self.sah_cekildi_beyaz = False
@@ -866,32 +881,55 @@ class Win(QMainWindow):
 
                 qp.drawPixmap(self.etkin_konum[0],self.etkin_konum[1],100,100,self.image_geldigi_yer)
                 if self.sira == 'siyah':
+                    for siyah_tas in self.taslarin_konumlari_siyah:
+                        for i in range(len(self.sah)):
+                            if siyah_tas[0] == self.sah[i]:
+                                self.sahin_yeri[0] = [siyah_tas[1],siyah_tas[2]]                      
                     for beyaz_tas in self.taslarin_konumlari_beyaz:
                         self.etkin_konum = [beyaz_tas[1],beyaz_tas[2]]
                         for i in range(len(self.piyon)):
                             if self.piyon[i] == beyaz_tas[0]:
                                 self.taslarin_gordugu_yerler.append([beyaz_tas[1]-100,beyaz_tas[2]-100])
                                 self.taslarin_gordugu_yerler.append([beyaz_tas[1]+100,beyaz_tas[2]-100])
+                                if (beyaz_tas[1]-100 == self.sahin_yeri[0][0] and beyaz_tas[2]-100 == self.sahin_yeri[0][1]) or\
+                                    (beyaz_tas[1]+100 == self.sahin_yeri[0][0] and beyaz_tas[2]-100 == self.sahin_yeri[0][1]):
+                                    self.sah_ceken_tas.append(beyaz_tas)
                         for i in range(len(self.fil)):
                             if self.fil[i] == beyaz_tas[0]:
                                 self.taslarin_gordugu_yerler.extend(self.fil_hareketi())
+                                for gidilebilir_yer in self.gidilebilir_yerler:
+                                    if gidilebilir_yer[0] == self.sahin_yeri[0][0] and gidilebilir_yer[1] == self.sahin_yeri[0][1]:
+                                        self.sah_ceken_tas.append(beyaz_tas)
+                                self.gidilebilir_yerler = []
                         for i in range(len(self.at)):
                             if self.at[i] == beyaz_tas[0]:
                                 self.taslarin_gordugu_yerler.extend(self.at_hareketi())
+                                for gidilebilir_yer in self.gidilebilir_yerler:
+                                    if gidilebilir_yer[0] == self.sahin_yeri[0][0] and gidilebilir_yer[1] == self.sahin_yeri[0][1]:
+                                        self.sah_ceken_tas.append(beyaz_tas)
+                                self.gidilebilir_yerler = []
                         for i in range(len(self.kale)):
                             if self.kale[i] == beyaz_tas[0]:
                                 self.taslarin_gordugu_yerler.extend(self.kale_hareketi())
+                                for gidilebilir_yer in self.gidilebilir_yerler:
+                                    if gidilebilir_yer[0] == self.sahin_yeri[0][0] and gidilebilir_yer[1] == self.sahin_yeri[0][1]:
+                                        self.sah_ceken_tas.append(beyaz_tas)
+                                self.gidilebilir_yerler = []
                         for i in range(len(self.vezir)):
                             if self.vezir[i] == beyaz_tas[0]:
                                 self.taslarin_gordugu_yerler.extend(self.kale_hareketi())
                                 self.taslarin_gordugu_yerler.extend(self.fil_hareketi())
+                                for gidilebilir_yer in self.gidilebilir_yerler:
+                                    if gidilebilir_yer[0] == self.sahin_yeri[0][0] and gidilebilir_yer[1] == self.sahin_yeri[0][1]:
+                                        self.sah_ceken_tas.append(beyaz_tas)
+                                self.gidilebilir_yerler = []
                         for i in range(len(self.sah)):
                             if self.sah[i] == beyaz_tas[0]:
                                 self.taslarin_gordugu_yerler.extend(self.sah_hareketi())
-                    for siyah_tas in self.taslarin_konumlari_siyah:
-                        for i in range(len(self.sah)):
-                            if siyah_tas[0] == self.sah[i]:
-                                self.sahin_yeri[0] = [siyah_tas[1],siyah_tas[2]]
+                                for gidilebilir_yer in self.gidilebilir_yerler:
+                                    if gidilebilir_yer[0] == self.sahin_yeri[0][0] and gidilebilir_yer[1] == self.sahin_yeri[0][1]:
+                                        self.sah_ceken_tas.append(beyaz_tas)
+                                self.gidilebilir_yerler = []
                     for gorulen_yer in self.taslarin_gordugu_yerler:
                         qp.drawPixmap(gorulen_yer[0],gorulen_yer[1],100,100,self.image_siyaha_boyama)
                         if gorulen_yer == self.sahin_yeri[0]:
@@ -899,32 +937,55 @@ class Win(QMainWindow):
                     self.gidilebilir_yerler = []
                     self.beyaz_taslarin_gordugu_yerler.extend(self.taslarin_gordugu_yerler)
                 elif self.sira == 'beyaz':
+                    for beyaz_tas in self.taslarin_konumlari_beyaz:
+                        for i in range(len(self.sah)):
+                            if beyaz_tas[0] == self.sah[i]:
+                                self.sahin_yeri[1] = [beyaz_tas[1],beyaz_tas[2]]
                     for siyah_tas in self.taslarin_konumlari_siyah:
                         self.etkin_konum = [siyah_tas[1],siyah_tas[2]]
                         for i in range(len(self.piyon)):
                             if self.piyon[i] == siyah_tas[0]:
                                 self.taslarin_gordugu_yerler.append([siyah_tas[1]-100,siyah_tas[2]+100])
                                 self.taslarin_gordugu_yerler.append([siyah_tas[1]+100,siyah_tas[2]+100])
+                                if (siyah_tas[1]-100 == self.sahin_yeri[1][0] and siyah_tas[2]+100 == self.sahin_yeri[1][1]) or\
+                                        (siyah_tas[1]+100 == self.sahin_yeri[1][0] and siyah_tas[2]+100 == self.sahin_yeri[1][1]):
+                                        self.sah_ceken_tas.append(siyah_tas)
                         for i in range(len(self.fil)):
                             if self.fil[i] == siyah_tas[0]:
                                 self.taslarin_gordugu_yerler.extend(self.fil_hareketi())
+                                for gidilebilir_yer in self.gidilebilir_yerler:
+                                    if gidilebilir_yer[0] == self.sahin_yeri[1][0] and gidilebilir_yer[1] == self.sahin_yeri[1][1]:
+                                        self.sah_ceken_tas.append(siyah_tas)
+                                self.gidilebilir_yerler = []
                         for i in range(len(self.at)):
                             if self.at[i] == siyah_tas[0]:
                                 self.taslarin_gordugu_yerler.extend(self.at_hareketi())
+                                for gidilebilir_yer in self.gidilebilir_yerler:
+                                    if gidilebilir_yer[0] == self.sahin_yeri[1][0] and gidilebilir_yer[1] == self.sahin_yeri[1][1]:
+                                        self.sah_ceken_tas.append(siyah_tas)
+                                self.gidilebilir_yerler = []
                         for i in range(len(self.kale)):
                             if self.kale[i] == siyah_tas[0]:
                                 self.taslarin_gordugu_yerler.extend(self.kale_hareketi())
+                                for gidilebilir_yer in self.gidilebilir_yerler:
+                                    if gidilebilir_yer[0] == self.sahin_yeri[1][0] and gidilebilir_yer[1] == self.sahin_yeri[1][1]:
+                                        self.sah_ceken_tas.append(siyah_tas)
+                                self.gidilebilir_yerler = []
                         for i in range(len(self.vezir)):
                             if self.vezir[i] == siyah_tas[0]:
                                 self.taslarin_gordugu_yerler.extend(self.kale_hareketi())
                                 self.taslarin_gordugu_yerler.extend(self.fil_hareketi())
+                                for gidilebilir_yer in self.gidilebilir_yerler:
+                                    if gidilebilir_yer[0] == self.sahin_yeri[1][0] and gidilebilir_yer[1] == self.sahin_yeri[1][1]:
+                                        self.sah_ceken_tas.append(siyah_tas)
+                                self.gidilebilir_yerler = []
                         for i in range(len(self.sah)):
                             if self.sah[i] == siyah_tas[0]:
                                 self.taslarin_gordugu_yerler.extend(self.sah_hareketi())
-                    for beyaz_tas in self.taslarin_konumlari_beyaz:
-                        for i in range(len(self.sah)):
-                            if beyaz_tas[0] == self.sah[i]:
-                                self.sahin_yeri[1] = [beyaz_tas[1],beyaz_tas[2]]
+                                for gidilebilir_yer in self.gidilebilir_yerler:
+                                    if gidilebilir_yer[0] == self.sahin_yeri[1][0] and gidilebilir_yer[1] == self.sahin_yeri[1][1]:
+                                        self.sah_ceken_tas.append(siyah_tas)
+                                self.gidilebilir_yerler = []
                     for gorulen_yer in self.taslarin_gordugu_yerler:
                         qp.drawPixmap(gorulen_yer[0],gorulen_yer[1],100,100,self.image_siyaha_boyama)
                         if gorulen_yer == self.sahin_yeri[1]:
@@ -933,7 +994,7 @@ class Win(QMainWindow):
                     self.siyah_taslarin_gordugu_yerler.extend(self.taslarin_gordugu_yerler)
                 # for siyah_taslarin_gordugu_yer in self.siyah_taslarin_gordugu_yerler:
                 #     if gorulen_yer ==
-                        
+                print(self.sah_ceken_tas)       
                 self.ilk_dokunus = 'tiklama'
                 self.a=1
                 self.yenilebilir_taslar = []
