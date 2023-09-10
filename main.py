@@ -789,12 +789,13 @@ class Win(QMainWindow):
                                         if siyah_tas[1] == gidilebilir_yer[0] and siyah_tas[2] == gidilebilir_yer[1]:
                                             e,f = siyah_tas[1],siyah_tas[2]
                                             silecegim_tas = [siyah_tas[1],siyah_tas[2]]
-                                    # if self.gecerken_alma[0] == 'var':
-                                    #     for i in range(len(self.piyon)):
-                                    #         if self.etkin_tas == self.gecerken_alma[1][0]:
-                                    #             if gidilebilir_yer[0] == self.gecerken_alma[2][0] and gidilebilir_yer[1] == self.gecerken_alma[2][1]:
-                                    #                 e,f = self.gecerken_alma[3],self.gecerken_alma[3]
-                                    #                 silecegim_tas = [self.gecerken_alma[3],self.gecerken_alma[3]]
+                                    if self.gecerken_alma[0] == 'var':
+                                        if self.etkin_tas == self.gecerken_alma[1][0]:
+                                            if gidilebilir_yer[0] == self.gecerken_alma[2][0] and gidilebilir_yer[1] == self.gecerken_alma[2][1]:
+                                                e,f = self.gecerken_alma[2][0],self.gecerken_alma[2][1]+100
+                                                silecegim_tas = [self.gecerken_alma[2][0],self.gecerken_alma[2][1]+100]
+                                                print(f'silecegim tas: {silecegim_tas}')
+                                    
                                     if len(silecegim_tas)>0:
                                         self.taslarin_konumlari_siyah = [[tas] if (x == silecegim_tas[0] and y == silecegim_tas[1]) else [tas, x, y] for tas, x, y in self.taslarin_konumlari_siyah ]
                                         print('konumlar silindi')
